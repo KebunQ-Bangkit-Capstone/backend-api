@@ -1,5 +1,5 @@
 import Elysia from "elysia";
-import { CommentService } from "./comment.service";
+import { CommentService } from ".";
 
 export const commentController = new Elysia({ prefix: '/comments' })
     .decorate('commentService', new CommentService())

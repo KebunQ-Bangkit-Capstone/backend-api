@@ -1,5 +1,5 @@
 import Elysia from "elysia";
-import { PredictionService } from "./prediction.service";
+import { PredictionService } from ".";
 
 export const predictionController = new Elysia({ prefix: '/predictions' })
     .decorate('predictionService', new PredictionService())
