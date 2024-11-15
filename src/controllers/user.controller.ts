@@ -1,7 +1,6 @@
-import Elysia, { error } from "elysia";
+import Elysia from "elysia";
 import { UserService } from "../services/user.service";
 import { updateUserDTO, userBody, UserDTO } from "../models/user.model";
-import { AppError } from "../utils/customError";
 
 export const userController = new Elysia({ prefix: '/users' })
     .decorate('userService', new UserService())

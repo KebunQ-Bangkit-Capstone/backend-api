@@ -1,6 +1,11 @@
-import { Firestore } from "@google-cloud/firestore";
 import { Storage } from '@google-cloud/storage';
+import { Pool } from 'pg';
 
-// key.json is located in project root
-export const firestore = new Firestore({ databaseId: 'kebun-q', keyFilename: 'key.json' });
 export const storage = new Storage({ keyFilename: 'key.json' });
+
+// local setup
+export const sql = new Pool({
+    user: 'postgres',
+    database: 'kebunq',
+    max: 20,
+});

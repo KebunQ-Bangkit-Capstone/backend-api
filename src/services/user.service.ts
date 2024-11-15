@@ -1,35 +1,84 @@
 import { UpdateUserDTO, UserDTO } from "../models/user.model";
-import { AppError } from "../utils/customError";
-import { firestore } from "../setup";
+import { sql } from "../setup";
+import { DatabaseError } from "../utils/customError";
 
 export class UserService {
-    private collection;
     constructor() {
-        this.collection = firestore.collection('users');
     }
 
     async create(data: UserDTO) {
-        await this.collection.doc(data.id).create(data);
+        const { id, name, created_at } = data;
+        const query = `insert into users values ($1, $2, $3)`;
+        const values = [id, name, created_at];
+
+        try {
+            await sql.query(query, values);
+        } catch (err: any) {
+            if (err.code === '23505') {
+                throw new DatabaseError('User already exist', 409);
+            }
+            throw new DatabaseError(err.message);
+        }
     }
 
     async getOne(id: string) {
-        const userDocument = await this.collection.doc(id).get();
+        const query = `select * from users where id = $1`;
 
-        if (!userDocument.exists) throw new AppError('user not found', 404);
+        try {
+            const { rows } = await sql.query<UserDTO>(query, [id]);
 
-        return userDocument.data() as UserDTO;
+            if (rows.length === 0) {
+                throw new DatabaseError('User not found', 404);
+            }
+
+            return rows[0];
+        } catch (err: any) {
+            if (err.statusCode === 404) {
+                throw err;
+            }
+            throw new DatabaseError(err.message);
+        }
     }
 
     async getMany() {
-        const snapshots = await this.collection.get();
-        return snapshots.docs.map((doc) => ({ ...doc.data() })) as UserDTO[];
+        const query = `select * from users`;
+
+        try {
+            const { rows } = await sql.query<UserDTO>(query);
+
+            return rows;
+        } catch (err: any) {
+            throw new DatabaseError(err.message);
+        }
     }
 
     async update(id: string, newData: UpdateUserDTO) {
-        await this.collection.doc(id).update(newData);
+        const { name } = newData;
+        const query = `update users set name = $1 where id = $2`;
+        const values = [name, id];
+
+        try {
+            await this.getOne(id);
+            await sql.query(query, values);
+        } catch (err: any) {
+            if (err.statusCode === 404) {
+                throw err;
+            }
+            throw new DatabaseError(err.message);
+        }
     }
 
     async delete(id: string) {
-        await this.collection.doc(id).delete({ exists: true });
+        const query = `delete from users where id = $1`;
+
+        try {
+            await this.getOne(id);
+            await sql.query(query, [id]);
+        } catch (err: any) {
+            if (err.statusCode === 404) {
+                throw err;
+            }
+            throw new DatabaseError(err.message);
+        }
     }
 }

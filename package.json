@@ -7,11 +7,13 @@
   "dependencies": {
     "@elysiajs/cors": "^1.1.1",
     "@elysiajs/swagger": "^1.1.5",
-    "@google-cloud/firestore": "^7.10.0",
+    "@google-cloud/cloud-sql-connector": "^1.4.0",
     "@google-cloud/storage": "^7.14.0",
-    "elysia": "latest"
+    "elysia": "latest",
+    "pg": "^8.13.1"
   },
   "devDependencies": {
+    "@types/pg": "^8.11.10",
     "bun-types": "latest"
   }
 }
