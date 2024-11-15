@@ -1,6 +1,6 @@
 import { t } from "elysia";
 
-const diseaseAnalysisDTO = t.Object({
+const predictionDTO = t.Object({
     id: t.String(),
     plant_name: t.String(),
     disease_name: t.String(),
@@ -9,9 +9,9 @@ const diseaseAnalysisDTO = t.Object({
     created_at: t.String()
 });
 
-export const DiseaseAnalysisDTO = diseaseAnalysisDTO.static;
+export const PredictionDTO = predictionDTO.static;
 
-export const diseaseAnalysisBody = t.Object({
+export const predictionBody = t.Object({
     user_id: t.String(),
     image: t.File(),
 });

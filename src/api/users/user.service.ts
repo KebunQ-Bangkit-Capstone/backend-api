@@ -1,6 +1,6 @@
-import { UpdateUserDTO, UserDTO } from "../models/user.model";
-import { sql } from "../setup";
-import { DatabaseError } from "../utils/customError";
+import { sql } from "../../setup";
+import { DatabaseError } from "../../utils/customError";
+import { UpdateUserDTO, UserDTO } from "./user.model";
 
 export class UserService {
     constructor() {

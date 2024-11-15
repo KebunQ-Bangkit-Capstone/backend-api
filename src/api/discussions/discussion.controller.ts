@@ -1,5 +1,5 @@
 import Elysia from "elysia";
-import { DiscussionService } from "../services/discussion.service";
+import { DiscussionService } from "./discussion.service";
 
 export const discussionController = new Elysia({ prefix: '/discussions' })
     .decorate('discussionsService', new DiscussionService())

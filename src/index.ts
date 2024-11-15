@@ -1,11 +1,11 @@
 import { Elysia } from 'elysia';
 import { cors } from '@elysiajs/cors';
 import { swagger } from '@elysiajs/swagger';
-import { userController } from './controllers/user.controller';
-import { analysisController } from './controllers/diseaseAnalysis.controller';
-import { discussionController } from './controllers/discussion.controller';
-import { commentController } from './controllers/comment.controller';
 import { DatabaseError } from './utils/customError';
+import { userController } from './api/users';
+import { predictionController } from './api/predictions';
+import { discussionController } from './api/discussions';
+import { commentController } from './api/comments';
 
 const app = new Elysia()
     .use(cors())
@@ -24,7 +24,7 @@ const app = new Elysia()
         }
     })
     .use(userController)
-    .use(analysisController)
+    .use(predictionController)
     .use(discussionController)
     .use(commentController)
     .listen(8000);
