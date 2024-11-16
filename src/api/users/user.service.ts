@@ -1,4 +1,4 @@
-import { UpdateUserDTO, UserDTO } from ".";
+import { UpdateUserDTO, UserDTO } from "./user.model";
 import { sql } from "../../setup";
 import { DatabaseError } from "../../utils/customError";
 

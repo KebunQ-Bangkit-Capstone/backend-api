@@ -2,10 +2,10 @@ import { Elysia } from 'elysia';
 import { cors } from '@elysiajs/cors';
 import { swagger } from '@elysiajs/swagger';
 import { DatabaseError } from './utils/customError';
-import { userController } from './api/users';
-import { predictionController } from './api/predictions';
-import { discussionController } from './api/discussions';
-import { commentController } from './api/comments';
+import { predictionController } from './api/predictions/prediction.controller';
+import { discussionController } from './api/discussions/discussion.controller';
+import { commentController } from './api/comments/comment.controller';
+import { userController } from './api/users/user.controller';
 
 const app = new Elysia()
     .use(cors())
