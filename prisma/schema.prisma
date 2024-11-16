@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite" //coba pake sqlite dulu
+  url      = "file:./dev.db" //env("DATABASE_URL")
+}
+
+model User {
+  user_id String @id @default(uuid())
+  email String @unique
+  password String
+  name String
+  created_at DateTime @default(now())
+
+  //have relation on
+  predictions Prediction[]
+  discussions Discussion[]
+  comments Comments[]
+
+}
+
+model Prediction {
+  prediction_id String @id @default(uuid())
+  plant_name String
+  disease_name String
+  image String
+  article_url String
+  created_at DateTime @default(now())
+
+  //relation with
+  user_id String
+
+  //have relation on
+  user User @relation(fields: [user_id], references: [user_id])
+}
+
+model Discussion {
+  discussion_id String @id @default(uuid())
+  content String
+  image String
+  created_at DateTime @default(now())
+
+  //relation with
+  user_id String
+
+  //have relation on
+  user User @relation(fields: [user_id], references: [user_id])
+  comments Comments[]
+}
+
+model Comments {
+  comment_id String @id @default(uuid())
+  content String 
+  created_at DateTime @default(now())
+
+  //relation with
+  user_id String
+  discussion_id String
+
+
+  //have relation on
+  user User @relation(fields: [user_id], references: [user_id])
+  discussion Discussion @relation(fields: [discussion_id], references: [discussion_id])
+}
