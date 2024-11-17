@@ -1,11 +1,9 @@
-import { PrismaClient } from "@prisma/client";
 import { CommentDTO, UpdateCommentDTO } from "./comment.model";
 import { DatabaseError } from "../../utils/customError";
-
-const prisma = new PrismaClient();
+import { prisma } from "../../setup";
 
 export class CommentService {
-  constructor() {}
+  constructor() { }
 
   async create(data: Omit<CommentDTO, "comment_id">) {
     try {
@@ -14,7 +12,7 @@ export class CommentService {
           user_id: data.user_id,
           discussion_id: data.discussion_id,
           content: data.content,
-          created_at: new Date(data.created_at),
+          created_at: data.created_at,
         },
       });
     } catch (err: any) {

@@ -18,7 +18,7 @@ export const discussionController = new Elysia({ prefix: "/discussions" })
       const data: Omit<DiscussionDTO, "discussion_id"> = {
         user_id: body.user_id,
         content: body.content,
-        image: body.image,
+        image_id: body.image_id,
         created_at: date.toISOString().replace("Z", "+07:00"),
       };
 

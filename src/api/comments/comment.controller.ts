@@ -28,8 +28,8 @@ export const commentController = new Elysia({ prefix: "/comments" })
     { body: commentBody }
   )
 
-  .get("/:comment_id", async ({ commentService, params: { comment_id } }) => {
-    const comment = await commentService.getOne(comment_id);
+  .get("/:id", async ({ commentService, params: { id } }) => {
+    const comment = await commentService.getOne(id);
 
     return {
       status: "success",
@@ -47,9 +47,9 @@ export const commentController = new Elysia({ prefix: "/comments" })
   })
 
   .patch(
-    "/:comment_id",
-    async ({ commentService, params: { comment_id }, body }) => {
-      await commentService.update(comment_id, body);
+    "/:id",
+    async ({ commentService, params: { id }, body }) => {
+      await commentService.update(id, body);
 
       return {
         status: "success",
@@ -60,9 +60,9 @@ export const commentController = new Elysia({ prefix: "/comments" })
   )
 
   .delete(
-    "/:comment_id",
-    async ({ commentService, params: { comment_id } }) => {
-      await commentService.delete(comment_id);
+    "/:id",
+    async ({ commentService, params: { id } }) => {
+      await commentService.delete(id);
 
       return {
         status: "success",

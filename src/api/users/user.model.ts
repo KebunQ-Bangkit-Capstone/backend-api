@@ -1,13 +1,15 @@
 import { t } from "elysia";
 
 export const userDTO = t.Object({
-    id: t.String(),
+    user_id: t.String(),
+    email: t.String(),
     name: t.String(),
     created_at: t.String(),
 });
 
 export const userBody = t.Object({
-    id: t.String(),
+    user_id: t.String(),
+    email: t.String(),
     name: t.String(),
 });
 

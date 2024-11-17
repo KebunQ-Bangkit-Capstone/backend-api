@@ -4,19 +4,19 @@ export const discussionDTO = t.Object({
   discussion_id: t.String(),
   user_id: t.String(),
   content: t.String(),
-  image: t.String(),
+  image_id: t.Optional(t.String()),
   created_at: t.String(),
 });
 
 export const discussionBody = t.Object({
   user_id: t.String(),
   content: t.String(),
-  image: t.String(),
+  image_id: t.Optional(t.String()),
 });
 
 export const updateDiscussionDTO = t.Object({
   content: t.Optional(t.String()),
-  image: t.Optional(t.String()),
+  image_id: t.Optional(t.String()),
 });
 
 export type DiscussionDTO = typeof discussionDTO.static;

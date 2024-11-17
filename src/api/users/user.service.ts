@@ -1,83 +1,55 @@
 import { UpdateUserDTO, UserDTO } from "./user.model";
-import { sql } from "../../setup";
 import { DatabaseError } from "../../utils/customError";
+import { prisma } from "../../setup";
 
 export class UserService {
     constructor() {
     }
 
     async create(data: UserDTO) {
-        const { id, name, created_at } = data;
-        const query = `insert into users values ($1, $2, $3)`;
-        const values = [id, name, created_at];
-
         try {
-            await sql.query(query, values);
+            await prisma.users.create({
+                data: { ...data }
+            });
         } catch (err: any) {
-            if (err.code === '23505') {
-                throw new DatabaseError('User already exist', 409);
-            }
             throw new DatabaseError(err.message);
         }
     }
 
     async getOne(id: string) {
-        const query = `select * from users where id = $1`;
-
         try {
-            const { rows } = await sql.query<UserDTO>(query, [id]);
-
-            if (rows.length === 0) {
-                throw new DatabaseError('User not found', 404);
-            }
-
-            return rows[0];
+            return await prisma.users.findUniqueOrThrow({ where: { user_id: id } });
         } catch (err: any) {
-            if (err.statusCode === 404) {
-                throw err;
+            if (err.code === 'P2025') {
+                throw new DatabaseError('User not found', 404);
             }
             throw new DatabaseError(err.message);
         }
     }
 
     async getMany() {
-        const query = `select * from users`;
-
         try {
-            const { rows } = await sql.query<UserDTO>(query);
-
-            return rows;
+            return await prisma.users.findMany();
         } catch (err: any) {
             throw new DatabaseError(err.message);
         }
     }
 
     async update(id: string, newData: UpdateUserDTO) {
-        const { name } = newData;
-        const query = `update users set name = $1 where id = $2`;
-        const values = [name, id];
-
         try {
-            await this.getOne(id);
-            await sql.query(query, values);
+            await prisma.users.update({
+                where: { user_id: id },
+                data: { ...newData }
+            })
         } catch (err: any) {
-            if (err.statusCode === 404) {
-                throw err;
-            }
             throw new DatabaseError(err.message);
         }
     }
 
     async delete(id: string) {
-        const query = `delete from users where id = $1`;
-
         try {
-            await this.getOne(id);
-            await sql.query(query, [id]);
+            await prisma.users.delete({ where: { user_id: id } });
         } catch (err: any) {
-            if (err.statusCode === 404) {
-                throw err;
-            }
             throw new DatabaseError(err.message);
         }
     }

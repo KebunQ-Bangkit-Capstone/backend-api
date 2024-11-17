@@ -1,20 +1,18 @@
-import { PrismaClient } from "@prisma/client";
 import { DiscussionDTO, UpdateDiscussionDTO } from "./discussion.model";
 import { DatabaseError } from "../../utils/customError";
-
-const prisma = new PrismaClient();
+import { prisma } from "../../setup";
 
 export class DiscussionService {
   constructor() {}
 
   async create(data: Omit<DiscussionDTO, "discussion_id">) {
     try {
-      await prisma.discussion.create({
+      await prisma.discussions.create({
         data: {
           user_id: data.user_id,
           content: data.content,
-          image: data.image,
-          created_at: new Date(data.created_at),
+          image_id: data.image_id,
+          created_at: data.created_at,
         },
       });
     } catch (err: any) {
@@ -24,7 +22,7 @@ export class DiscussionService {
 
   async getOne(id: string) {
     try {
-      const discussion = await prisma.discussion.findUnique({
+      const discussion = await prisma.discussions.findUnique({
         where: { discussion_id: id },
       });
 
@@ -43,7 +41,7 @@ export class DiscussionService {
 
   async getMany() {
     try {
-      return await prisma.discussion.findMany();
+      return await prisma.discussions.findMany();
     } catch (err: any) {
       throw new DatabaseError(err.message);
     }
@@ -52,7 +50,7 @@ export class DiscussionService {
   async update(id: string, newData: UpdateDiscussionDTO) {
     try {
       await this.getOne(id);
-      await prisma.discussion.update({
+      await prisma.discussions.update({
         where: { discussion_id: id },
         data: newData,
       });
@@ -67,7 +65,7 @@ export class DiscussionService {
   async delete(id: string) {
     try {
       await this.getOne(id);
-      await prisma.discussion.delete({
+      await prisma.discussions.delete({
         where: { discussion_id: id },
       });
     } catch (err: any) {

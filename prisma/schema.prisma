@@ -13,53 +13,51 @@ datasource db {
   url      = "file:./dev.db" //env("DATABASE_URL")
 }
 
-model User {
-  user_id String @id @default(uuid())
+model Users {
+  user_id String @id
   email String @unique
-  password String
   name String
-  created_at DateTime @default(now())
+  created_at String
 
   //have relation on
-  predictions Prediction[]
-  discussions Discussion[]
+  predictions Predictions[]
+  discussions Discussions[]
   comments Comments[]
-
 }
 
-model Prediction {
+model Predictions {
   prediction_id String @id @default(uuid())
   plant_name String
   disease_name String
-  image String
+  image_id String
   article_url String
-  created_at DateTime @default(now())
+  created_at String
 
   //relation with
   user_id String
 
   //have relation on
-  user User @relation(fields: [user_id], references: [user_id])
+  user Users @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
 }
 
-model Discussion {
+model Discussions {
   discussion_id String @id @default(uuid())
   content String
-  image String
-  created_at DateTime @default(now())
+  image_id String?
+  created_at String
 
   //relation with
   user_id String
 
   //have relation on
-  user User @relation(fields: [user_id], references: [user_id])
+  user Users @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
   comments Comments[]
 }
 
 model Comments {
   comment_id String @id @default(uuid())
   content String 
-  created_at DateTime @default(now())
+  created_at String
 
   //relation with
   user_id String
@@ -67,6 +65,6 @@ model Comments {
 
 
   //have relation on
-  user User @relation(fields: [user_id], references: [user_id])
-  discussion Discussion @relation(fields: [discussion_id], references: [discussion_id])
+  user Users @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+  discussion Discussions @relation(fields: [discussion_id], references: [discussion_id], onDelete: Cascade, onUpdate: NoAction)
 }

@@ -3,35 +3,36 @@ import { cors } from "@elysiajs/cors";
 import { swagger } from "@elysiajs/swagger";
 import { DatabaseError } from "./utils/customError";
 import { discussionController } from "./api/discussions/discussion.controller";
-import { PrismaClient } from "@prisma/client";
-
-// Inisialisasi Prisma Client
-const prisma = new PrismaClient();
+import { userController } from "./api/users/user.controller";
+import { commentController } from "./api/comments/comment.controller";
+import { predictionController } from "./api/predictions/prediction.controller";
+import { prisma } from "./setup";
 
 const app = new Elysia()
   .use(cors())
   .use(swagger())
-  .decorate("prisma", prisma) // Menyediakan prisma client ke dalam konteks Elysia
   .error({ DatabaseError })
   .onError(({ error, set }) => {
     set.headers["content-type"] = "application/json";
 
     if (error instanceof DatabaseError) {
-      set.status = error.statusCode;
+      set.status = error.code;
       return {
         status: "fail",
         message: error.message,
       };
-    } else {
-      set.status = 500;
-      return {
-        status: "error",
-        message: "An unexpected error occurred",
-      };
+    }
+
+    set.status = 500;
+    return {
+      status: "error",
+      message: "An unexpected error occurred",
     }
   })
+  .use(userController)
+  .use(predictionController)
   .use(discussionController)
-  // Tambahkan controller lainnya jika ada
+  .use(commentController)
   .listen(8000);
 
 console.log(
