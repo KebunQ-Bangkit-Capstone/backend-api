@@ -1,32 +1,51 @@
-import { Elysia } from 'elysia';
-import { cors } from '@elysiajs/cors';
-import { swagger } from '@elysiajs/swagger';
-import { DatabaseError } from './utils/customError';
-import { predictionController } from './api/predictions/prediction.controller';
-import { discussionController } from './api/discussions/discussion.controller';
-import { commentController } from './api/comments/comment.controller';
-import { userController } from './api/users/user.controller';
+import { Elysia } from "elysia";
+import { cors } from "@elysiajs/cors";
+import { swagger } from "@elysiajs/swagger";
+import { DatabaseError } from "./utils/customError";
+import { discussionController } from "./api/discussions/discussion.controller";
+import { PrismaClient } from "@prisma/client";
+
+// Inisialisasi Prisma Client
+const prisma = new PrismaClient();
 
 const app = new Elysia()
-    .use(cors())
-    .use(swagger())
-    .error({ DatabaseError })
-    .onError(({ error, code, set }) => {
-        set.headers['content-type'] = 'application/json';
+  .use(cors())
+  .use(swagger())
+  .decorate("prisma", prisma) // Menyediakan prisma client ke dalam konteks Elysia
+  .error({ DatabaseError })
+  .onError(({ error, set }) => {
+    set.headers["content-type"] = "application/json";
 
-        if (code === 'DatabaseError') {
-            const { name, message, statusCode } = error;
-            set.status = statusCode;
-            return {
-                status: 'fail',
-                message: `${name}: ${message}`
-            }
-        }
-    })
-    .use(userController)
-    .use(predictionController)
-    .use(discussionController)
-    .use(commentController)
-    .listen(8000);
+    if (error instanceof DatabaseError) {
+      set.status = error.statusCode;
+      return {
+        status: "fail",
+        message: error.message,
+      };
+    } else {
+      set.status = 500;
+      return {
+        status: "error",
+        message: "An unexpected error occurred",
+      };
+    }
+  })
+  .use(discussionController)
+  // Tambahkan controller lainnya jika ada
+  .listen(8000);
 
-console.log(`🦊 Server is running at ${app.server?.hostname}:${app.server?.port}`);
+console.log(
+  `🦊 Server is running at ${app.server?.hostname}:${app.server?.port}`
+);
+
+// Pastikan untuk menutup Prisma Client saat server berhenti
+process.on("SIGINT", async () => {
+  console.log("Closing Prisma Client");
+  await prisma.$disconnect();
+  process.exit();
+});
+process.on("SIGTERM", async () => {
+  console.log("Closing Prisma Client");
+  await prisma.$disconnect();
+  process.exit();
+});
