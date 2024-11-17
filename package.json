@@ -9,8 +9,10 @@
     "@elysiajs/swagger": "^1.1.5",
     "@google-cloud/cloud-sql-connector": "^1.4.0",
     "@google-cloud/storage": "^7.14.0",
-    "elysia": "latest",
-    "pg": "^8.13.1"
+    "@prisma/client": "^5.22.0",
+    "elysia": "^1.1.25",
+    "pg": "^8.13.1",
+    "prisma": "^5.22.0"
   },
   "devDependencies": {
     "@types/pg": "^8.11.10",
