@@ -4,7 +4,7 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "created_at" DATETIME NOT NULL
+    "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- CreateTable
@@ -14,7 +14,7 @@ CREATE TABLE "Prediction" (
     "disease_name" TEXT NOT NULL,
     "image" TEXT NOT NULL,
     "article_url" TEXT NOT NULL,
-    "created_at" DATETIME NOT NULL,
+    "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "user_id" TEXT NOT NULL,
     CONSTRAINT "Prediction_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User" ("user_id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
@@ -24,7 +24,7 @@ CREATE TABLE "Discussion" (
     "discussion_id" TEXT NOT NULL PRIMARY KEY,
     "content" TEXT NOT NULL,
     "image" TEXT NOT NULL,
-    "created_at" DATETIME NOT NULL,
+    "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "user_id" TEXT NOT NULL,
     CONSTRAINT "Discussion_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User" ("user_id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
@@ -33,7 +33,7 @@ CREATE TABLE "Discussion" (
 CREATE TABLE "Comments" (
     "comment_id" TEXT NOT NULL PRIMARY KEY,
     "content" TEXT NOT NULL,
-    "created_at" DATETIME NOT NULL,
+    "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "user_id" TEXT NOT NULL,
     "discussion_id" TEXT NOT NULL,
     CONSTRAINT "Comments_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User" ("user_id") ON DELETE RESTRICT ON UPDATE CASCADE,
