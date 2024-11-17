@@ -3,17 +3,12 @@ import { DatabaseError } from "../../utils/customError";
 import { prisma } from "../../setup";
 
 export class DiscussionService {
-  constructor() {}
+  constructor() { }
 
   async create(data: Omit<DiscussionDTO, "discussion_id">) {
     try {
       await prisma.discussions.create({
-        data: {
-          user_id: data.user_id,
-          content: data.content,
-          image_id: data.image_id,
-          created_at: data.created_at,
-        },
+        data: { ...data },
       });
     } catch (err: any) {
       throw new DatabaseError(err.message);

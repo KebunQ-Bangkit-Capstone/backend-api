@@ -6,15 +6,11 @@ export const userController = new Elysia({ prefix: '/users' })
     .decorate('userService', new UserService())
 
     .post('/', async ({ userService, body }) => {
-        const { user_id, email, name } = body;
-
         const date = new Date();
         date.setHours(date.getHours() + 7);
 
         const data: UserDTO = {
-            user_id: user_id,
-            email: email,
-            name: name,
+            ...body,
             created_at: date.toISOString().replace('Z', '+07:00'),
         }
 

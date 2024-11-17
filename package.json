@@ -10,6 +10,7 @@
     "@google-cloud/cloud-sql-connector": "^1.4.0",
     "@google-cloud/storage": "^7.14.0",
     "@prisma/client": "^5.22.0",
+    "@tensorflow/tfjs-node": "^4.22.0",
     "elysia": "^1.1.25",
     "pg": "^8.13.1",
     "prisma": "^5.22.0"

@@ -5,26 +5,22 @@ import { commentBody, updateCommentDTO, CommentDTO } from "./comment.model";
 export const commentController = new Elysia({ prefix: "/comments" })
   .decorate("commentService", new CommentService())
 
-  .post(
-    "/",
-    async ({ commentService, body }) => {
-      const date = new Date();
-      date.setHours(date.getHours() + 7);
+  .post("/", async ({ commentService, body }) => {
+    const date = new Date();
+    date.setHours(date.getHours() + 7);
 
-      const data: Omit<CommentDTO, "comment_id"> = {
-        user_id: body.user_id,
-        discussion_id: body.discussion_id,
-        content: body.content,
-        created_at: date.toISOString().replace("Z", "+07:00"),
-      };
+    const data: Omit<CommentDTO, "comment_id"> = {
+      ...body,
+      created_at: date.toISOString().replace("Z", "+07:00"),
+    };
 
-      await commentService.create(data);
+    await commentService.create(data);
 
-      return {
-        status: "success",
-        message: "Comment created successfully.",
-      };
-    },
+    return {
+      status: "success",
+      message: "Comment created successfully.",
+    };
+  },
     { body: commentBody }
   )
 
@@ -46,27 +42,23 @@ export const commentController = new Elysia({ prefix: "/comments" })
     };
   })
 
-  .patch(
-    "/:id",
-    async ({ commentService, params: { id }, body }) => {
-      await commentService.update(id, body);
+  .patch("/:id", async ({ commentService, params: { id }, body }) => {
+    await commentService.update(id, body);
 
-      return {
-        status: "success",
-        message: "Comment updated successfully.",
-      };
-    },
+    return {
+      status: "success",
+      message: "Comment updated successfully.",
+    };
+  },
     { body: updateCommentDTO }
   )
 
-  .delete(
-    "/:id",
-    async ({ commentService, params: { id } }) => {
-      await commentService.delete(id);
+  .delete("/:id", async ({ commentService, params: { id } }) => {
+    await commentService.delete(id);
 
-      return {
-        status: "success",
-        message: "Comment deleted successfully.",
-      };
-    }
+    return {
+      status: "success",
+      message: "Comment deleted successfully.",
+    };
+  }
   );

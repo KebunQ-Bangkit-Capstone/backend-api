@@ -9,26 +9,22 @@ import {
 export const discussionController = new Elysia({ prefix: "/discussions" })
   .decorate("discussionService", new DiscussionService())
 
-  .post(
-    "/",
-    async ({ discussionService, body }) => {
-      const date = new Date();
-      date.setHours(date.getHours() + 7);
+  .post("/", async ({ discussionService, body }) => {
+    const date = new Date();
+    date.setHours(date.getHours() + 7);
 
-      const data: Omit<DiscussionDTO, "discussion_id"> = {
-        user_id: body.user_id,
-        content: body.content,
-        image_id: body.image_id,
-        created_at: date.toISOString().replace("Z", "+07:00"),
-      };
+    const data: Omit<DiscussionDTO, "discussion_id"> = {
+      ...body,
+      created_at: date.toISOString().replace("Z", "+07:00"),
+    };
 
-      await discussionService.create(data);
+    await discussionService.create(data);
 
-      return {
-        status: "success",
-        message: "Discussion created successfully.",
-      };
-    },
+    return {
+      status: "success",
+      message: "Discussion created successfully.",
+    };
+  },
     { body: discussionBody }
   )
 
@@ -50,16 +46,14 @@ export const discussionController = new Elysia({ prefix: "/discussions" })
     };
   })
 
-  .patch(
-    "/:id",
-    async ({ discussionService, params: { id }, body }) => {
-      await discussionService.update(id, body);
+  .patch("/:id", async ({ discussionService, params: { id }, body }) => {
+    await discussionService.update(id, body);
 
-      return {
-        status: "success",
-        message: "Discussion updated successfully.",
-      };
-    },
+    return {
+      status: "success",
+      message: "Discussion updated successfully.",
+    };
+  },
     { body: updateDiscussionDTO }
   )
 
