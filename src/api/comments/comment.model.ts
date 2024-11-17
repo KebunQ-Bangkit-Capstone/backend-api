@@ -1,11 +1,23 @@
 import { t } from "elysia";
 
-const commentDTO = t.Object({
-    id: t.String(),
-    user_id: t.String(),
-    discussion_id: t.String(),
-    content: t.String(),
-    created_at: t.String(),
+export const commentDTO = t.Object({
+  comment_id: t.String(),
+  user_id: t.String(),
+  discussion_id: t.String(),
+  content: t.String(),
+  created_at: t.String(),
 });
 
-export const CommentDTO = commentDTO.static;
+export const commentBody = t.Object({
+  user_id: t.String(),
+  discussion_id: t.String(),
+  content: t.String(),
+});
+
+export const updateCommentDTO = t.Object({
+  content: t.String(),
+});
+
+export type CommentDTO = typeof commentDTO.static;
+export type CommentBody = typeof commentBody.static;
+export type UpdateCommentDTO = typeof updateCommentDTO.static;
