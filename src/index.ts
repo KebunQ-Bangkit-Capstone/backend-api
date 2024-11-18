@@ -2,11 +2,8 @@ import { Elysia } from "elysia";
 import { cors } from "@elysiajs/cors";
 import { swagger } from "@elysiajs/swagger";
 import { DatabaseError } from "./utils/customError";
-import { discussionController } from "./api/discussions/discussion.controller";
-import { userController } from "./api/users/user.controller";
-import { commentController } from "./api/comments/comment.controller";
-import { predictionController } from "./api/predictions/prediction.controller";
 import { prisma } from "./utils/prisma";
+import { controllers } from "./api";
 
 const app = new Elysia()
     .use(cors())
@@ -32,10 +29,7 @@ const app = new Elysia()
             message: responseMessage,
         }
     })
-    .use(userController)
-    .use(predictionController)
-    .use(discussionController)
-    .use(commentController)
+    .use(controllers)
     .listen(8000);
 
 console.log(`🦊 Server is running at ${app.server?.hostname}:${app.server?.port}`);

@@ -19,6 +19,10 @@ export const updateUserDTO = t.Object({
     }),
 });
 
+export const userParams = t.Object({
+    id: t.String({ description: 'User UID from firebase' })
+});
+
 export type UserDTO = typeof userDTO.static;
 export type UpdateUserDTO = typeof updateUserDTO.static;
 export type UserBody = typeof userBody.static;

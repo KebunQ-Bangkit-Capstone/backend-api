@@ -1,8 +1,7 @@
 import Elysia, { t } from "elysia";
 import { UserService } from "./user.service";
-import { updateUserDTO, userBody, userDTO, UserDTO } from "./user.model";
+import { updateUserDTO, userBody, userDTO, UserDTO, userParams } from "./user.model";
 import { generalResponse } from "../../models/response.model";
-import { userParams } from "../../models/params.model";
 
 export const userController = new Elysia({
     prefix: '/users',
