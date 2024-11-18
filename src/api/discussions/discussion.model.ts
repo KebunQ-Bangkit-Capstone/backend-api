@@ -4,7 +4,7 @@ export const discussionDTO = t.Object({
   discussion_id: t.String(),
   user_id: t.String(),
   content: t.String(),
-  image_id: t.Optional(t.String()),
+  image_id: t.Optional(t.Nullable(t.String())),
   created_at: t.String(),
 });
 

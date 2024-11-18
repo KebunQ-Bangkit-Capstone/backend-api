@@ -1,8 +1,13 @@
-import Elysia from "elysia";
+import Elysia, { t } from "elysia";
 import { UserService } from "./user.service";
-import { updateUserDTO, userBody, UserDTO } from "./user.model";
+import { updateUserDTO, userBody, userDTO, UserDTO } from "./user.model";
+import { generalResponse } from "../../models/response.model";
+import { userParams } from "../../models/params.model";
 
-export const userController = new Elysia({ prefix: '/users' })
+export const userController = new Elysia({
+    prefix: '/users',
+    tags: ['Users'],
+})
     .decorate('userService', new UserService())
 
     .post('/', async ({ userService, body }) => {
@@ -17,26 +22,35 @@ export const userController = new Elysia({ prefix: '/users' })
         await userService.create(data);
 
         return {
-            status: 'success',
-            message: 'user created successfully.'
+            message: 'User created successfully'
+        };
+    }, {
+        body: userBody,
+        response: generalResponse,
+        detail: {
+            summary: 'Create User',
         }
-    }, { body: userBody })
+    })
 
     .get('/:id', async ({ userService, params: { id } }) => {
-        const user = await userService.getOne(id);
-
-        return {
-            status: 'success',
-            data: user
+        return await userService.getOne(id);
+    }, {
+        params: userParams,
+        response: userDTO,
+        detail: {
+            summary: 'Get One User',
         }
     })
 
     .get('/', async ({ userService }) => {
         const users = await userService.getMany();
-
         return {
-            status: 'success',
-            data: users
+            users: [...users]
+        }
+    }, {
+        response: t.Object({ users: t.Array(userDTO) }),
+        detail: {
+            summary: 'Get Many Users',
         }
     })
 
@@ -44,16 +58,27 @@ export const userController = new Elysia({ prefix: '/users' })
         await userService.update(id, body);
 
         return {
-            status: 'success',
-            message: 'user updated successfully.'
+            message: 'User updated successfully'
+        };
+    }, {
+        params: userParams,
+        body: updateUserDTO,
+        response: generalResponse,
+        detail: {
+            summary: 'Update User',
         }
-    }, { body: updateUserDTO })
+    })
 
     .delete('/:id', async ({ userService, params: { id } }) => {
         await userService.delete(id);
 
         return {
-            status: 'success',
-            message: 'user deleted successfully.'
+            message: 'User deleted successfully'
+        };
+    }, {
+        params: userParams,
+        response: generalResponse,
+        detail: {
+            summary: 'Delete User',
         }
     })

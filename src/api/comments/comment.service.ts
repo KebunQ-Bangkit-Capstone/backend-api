@@ -1,6 +1,6 @@
 import { CommentDTO, UpdateCommentDTO } from "./comment.model";
 import { DatabaseError } from "../../utils/customError";
-import { prisma } from "../../setup";
+import { prisma } from "../../utils/prisma";
 
 export class CommentService {
   constructor() { }
@@ -17,14 +17,11 @@ export class CommentService {
 
   async getOne(comment_id: string) {
     try {
-      const comment = await prisma.comments.findUnique({
-        where: { comment_id },
-      });
-      if (!comment) {
-        throw new DatabaseError("Comment not found", 404);
-      }
-      return comment;
+      return await prisma.comments.findUniqueOrThrow({ where: { comment_id } });
     } catch (err: any) {
+      if (err.code === 'P2025') {
+        throw new DatabaseError('Comment not found', 404);
+      }
       throw new DatabaseError(err.message);
     }
   }
@@ -39,7 +36,6 @@ export class CommentService {
 
   async update(comment_id: string, newData: UpdateCommentDTO) {
     try {
-      await this.getOne(comment_id);
       await prisma.comments.update({
         where: { comment_id },
         data: { ...newData },
@@ -51,10 +47,7 @@ export class CommentService {
 
   async delete(comment_id: string) {
     try {
-      await this.getOne(comment_id);
-      await prisma.comments.delete({
-        where: { comment_id },
-      });
+      await prisma.comments.delete({ where: { comment_id } });
     } catch (err: any) {
       throw new DatabaseError(err.message);
     }

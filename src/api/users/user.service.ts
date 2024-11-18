@@ -1,6 +1,6 @@
 import { UpdateUserDTO, UserDTO } from "./user.model";
 import { DatabaseError } from "../../utils/customError";
-import { prisma } from "../../setup";
+import { prisma } from "../../utils/prisma";
 
 export class UserService {
     constructor() {

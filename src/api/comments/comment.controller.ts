@@ -1,8 +1,10 @@
-import Elysia from "elysia";
+import Elysia, { t } from "elysia";
 import { CommentService } from "./comment.service";
-import { commentBody, updateCommentDTO, CommentDTO } from "./comment.model";
+import { commentBody, updateCommentDTO, CommentDTO, commentDTO } from "./comment.model";
+import { generalResponse } from "../../models/response.model";
+import { generalParams } from "../../models/params.model";
 
-export const commentController = new Elysia({ prefix: "/comments" })
+export const commentController = new Elysia({ prefix: "/comments", tags: ['Comments'] })
   .decorate("commentService", new CommentService())
 
   .post("/", async ({ commentService, body }) => {
@@ -17,48 +19,66 @@ export const commentController = new Elysia({ prefix: "/comments" })
     await commentService.create(data);
 
     return {
-      status: "success",
       message: "Comment created successfully.",
     };
-  },
-    { body: commentBody }
+  }, {
+    body: commentBody,
+    response: generalResponse,
+    detail: {
+      summary: 'Create Comment',
+    }
+  }
   )
 
   .get("/:id", async ({ commentService, params: { id } }) => {
-    const comment = await commentService.getOne(id);
-
-    return {
-      status: "success",
-      data: comment,
-    };
+    return await commentService.getOne(id);
+  }, {
+    params: generalParams,
+    response: commentDTO,
+    detail: {
+      summary: 'Get One Comment',
+    }
   })
 
   .get("/", async ({ commentService }) => {
     const comments = await commentService.getMany();
 
     return {
-      status: "success",
-      data: comments,
+      comments: [...comments]
     };
+  }, {
+    response: t.Object({ comments: t.Array(commentDTO) }),
+    detail: {
+      summary: 'Get Many Comment',
+    }
   })
 
   .patch("/:id", async ({ commentService, params: { id }, body }) => {
     await commentService.update(id, body);
 
     return {
-      status: "success",
       message: "Comment updated successfully.",
     };
-  },
-    { body: updateCommentDTO }
+  }, {
+    params: generalParams,
+    body: updateCommentDTO,
+    response: generalResponse,
+    detail: {
+      summary: 'Update Comment',
+    }
+  }
   )
 
   .delete("/:id", async ({ commentService, params: { id } }) => {
     await commentService.delete(id);
 
     return {
-      status: "success",
       message: "Comment deleted successfully.",
     };
-  }
-  );
+  }, {
+    params: generalParams,
+    response: generalResponse,
+    detail: {
+      summary: 'Delete Comment',
+    }
+  });

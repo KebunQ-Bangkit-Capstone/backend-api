@@ -8,13 +8,15 @@ export const userDTO = t.Object({
 });
 
 export const userBody = t.Object({
-    user_id: t.String(),
-    email: t.String(),
-    name: t.String(),
+    user_id: t.String({ description: 'User UID from firebase' }),
+    email: t.String({ description: 'User email from firebase' }),
+    name: t.String({ description: 'Name of the user' }),
 });
 
 export const updateUserDTO = t.Object({
-    name: t.String(),
+    name: t.String({
+        description: 'New name to update'
+    }),
 });
 
 export type UserDTO = typeof userDTO.static;

@@ -1,6 +1,6 @@
 import { DiscussionDTO, UpdateDiscussionDTO } from "./discussion.model";
 import { DatabaseError } from "../../utils/customError";
-import { prisma } from "../../setup";
+import { prisma } from "../../utils/prisma";
 
 export class DiscussionService {
   constructor() { }
@@ -17,18 +17,10 @@ export class DiscussionService {
 
   async getOne(id: string) {
     try {
-      const discussion = await prisma.discussions.findUnique({
-        where: { discussion_id: id },
-      });
-
-      if (!discussion) {
-        throw new DatabaseError("Discussion not found", 404);
-      }
-
-      return discussion;
+      return await prisma.discussions.findUniqueOrThrow({ where: { discussion_id: id } });
     } catch (err: any) {
-      if (err.statusCode === 404) {
-        throw err;
+      if (err.code === 'P2025') {
+        throw new DatabaseError('Discussion not found', 404);
       }
       throw new DatabaseError(err.message);
     }
@@ -44,29 +36,19 @@ export class DiscussionService {
 
   async update(id: string, newData: UpdateDiscussionDTO) {
     try {
-      await this.getOne(id);
       await prisma.discussions.update({
         where: { discussion_id: id },
-        data: newData,
+        data: { ...newData },
       });
     } catch (err: any) {
-      if (err.statusCode === 404) {
-        throw err;
-      }
       throw new DatabaseError(err.message);
     }
   }
 
   async delete(id: string) {
     try {
-      await this.getOne(id);
-      await prisma.discussions.delete({
-        where: { discussion_id: id },
-      });
+      await prisma.discussions.delete({ where: { discussion_id: id } });
     } catch (err: any) {
-      if (err.statusCode === 404) {
-        throw err;
-      }
       throw new DatabaseError(err.message);
     }
   }

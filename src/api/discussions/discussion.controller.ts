@@ -1,12 +1,18 @@
-import Elysia from "elysia";
+import Elysia, { t } from "elysia";
 import { DiscussionService } from "./discussion.service";
 import {
   discussionBody,
   updateDiscussionDTO,
   DiscussionDTO,
+  discussionDTO,
 } from "./discussion.model";
+import { generalResponse } from "../../models/response.model";
+import { generalParams } from "../../models/params.model";
 
-export const discussionController = new Elysia({ prefix: "/discussions" })
+export const discussionController = new Elysia({
+  prefix: "/discussions",
+  tags: ['Discussions']
+})
   .decorate("discussionService", new DiscussionService())
 
   .post("/", async ({ discussionService, body }) => {
@@ -21,47 +27,68 @@ export const discussionController = new Elysia({ prefix: "/discussions" })
     await discussionService.create(data);
 
     return {
-      status: "success",
-      message: "Discussion created successfully.",
+      message: 'Discussion created successfully'
     };
   },
-    { body: discussionBody }
+    {
+      body: discussionBody,
+      response: generalResponse,
+      detail: {
+        summary: 'Create Discussion',
+      }
+    }
   )
 
   .get("/:id", async ({ discussionService, params: { id } }) => {
-    const discussion = await discussionService.getOne(id);
-
-    return {
-      status: "success",
-      data: discussion,
-    };
+    return await discussionService.getOne(id);
+  }, {
+    params: generalParams,
+    response: discussionDTO,
+    detail: {
+      summary: 'Get One Discussion',
+    }
   })
 
   .get("/", async ({ discussionService }) => {
     const discussions = await discussionService.getMany();
 
     return {
-      status: "success",
-      data: discussions,
+      discussions: [...discussions]
     };
+  }, {
+    response: t.Object({ discussions: t.Array(discussionDTO) }),
+    detail: {
+      summary: 'Get Many Discussion',
+    }
   })
 
   .patch("/:id", async ({ discussionService, params: { id }, body }) => {
     await discussionService.update(id, body);
 
     return {
-      status: "success",
-      message: "Discussion updated successfully.",
+      message: 'Discussion updated successfully'
     };
   },
-    { body: updateDiscussionDTO }
+    {
+      params: generalParams,
+      body: updateDiscussionDTO,
+      response: generalResponse,
+      detail: {
+        summary: 'Update Discussion',
+      }
+    }
   )
 
   .delete("/:id", async ({ discussionService, params: { id } }) => {
     await discussionService.delete(id);
 
     return {
-      status: "success",
-      message: "Discussion deleted successfully.",
+      message: 'Discussion deleted successfully'
     };
+  }, {
+    params: generalParams,
+    response: generalResponse,
+    detail: {
+      summary: 'Delete Discussion',
+    }
   });

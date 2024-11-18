@@ -1,5 +1,6 @@
 key.json
 awdmd
+/dist
 
 # dependencies
 /node_modules
