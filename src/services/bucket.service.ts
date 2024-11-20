@@ -1,7 +1,7 @@
 import { Storage } from "@google-cloud/storage";
 import { DatabaseError } from "../utils/customError";
 
-const storage = new Storage({ keyFilename: 'key.json' });
+const storage = new Storage();
 
 export class BucketService {
     constructor(private bucketName = 'kebunq-db') { }
