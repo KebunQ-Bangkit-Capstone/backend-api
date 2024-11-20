@@ -4,6 +4,7 @@ export const userDTO = t.Object({
     user_id: t.String(),
     email: t.String(),
     name: t.String(),
+    profile_image_id: t.Optional(t.Nullable(t.String())),
     created_at: t.String(),
 });
 
@@ -14,9 +15,9 @@ export const userBody = t.Object({
 });
 
 export const updateUserDTO = t.Object({
-    name: t.String({
-        description: 'New name to update'
-    }),
+    name: t.Optional(t.String({ description: 'New name to update' })),
+    // profile_image: t.Optional(t.File({ type: 'image', maxSize: '5m', maxItems: 1 })),
+    // profile_image_id: t.Optional(t.Nullable(t.String())),
 });
 
 export const userParams = t.Object({

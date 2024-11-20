@@ -14,6 +14,7 @@ const app = new Elysia()
                 { name: 'Predictions', description: 'Predictions endpoints' },
                 { name: 'Discussions', description: 'Discussions endpoints' },
                 { name: 'Comments', description: 'Comments endpoints' },
+                { name: 'Diseases', description: 'Diseases endpoints' },
             ]
         }
     }))

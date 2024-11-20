@@ -17,6 +17,7 @@ model Users {
   user_id String @id
   email String @unique
   name String
+  profile_image_id String?
   created_at String
 
   //have relation on
@@ -26,11 +27,11 @@ model Users {
 }
 
 model Predictions {
-  prediction_id String @id @default(uuid())
+  prediction_id String @id
   plant_name String
   disease_name String
+  confidence_score Float
   image_id String
-  article_url String
   created_at String
 
   //relation with

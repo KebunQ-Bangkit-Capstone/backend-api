@@ -32,10 +32,19 @@ export class DiseaseService {
         }
     }
 
-    async getMany(plantName: string) {
+    async getManyByPlantName(plantName: string) {
         try {
             const snapshots = await this.collection.where('plant_name', '==', plantName).get();
-            return snapshots.docs.map((doc) => ({ disease_id: doc.id, ...doc.data() })) as DiseaseDTO[];
+            return snapshots.docs.map((doc) => ({ ...doc.data() })) as DiseaseDTO[];
+        } catch (err: any) {
+            throw new DatabaseError(err.message);
+        }
+    }
+
+    async getMany() {
+        try {
+            const snapshots = await this.collection.get();
+            return snapshots.docs.map((doc) => ({ ...doc.data() })) as DiseaseDTO[];
         } catch (err: any) {
             throw new DatabaseError(err.message);
         }

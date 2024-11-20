@@ -3,9 +3,6 @@ import { DatabaseError } from "../../utils/customError";
 import { prisma } from "../../utils/prisma";
 
 export class UserService {
-    constructor() {
-    }
-
     async create(data: UserDTO) {
         try {
             await prisma.users.create({

@@ -14,6 +14,8 @@ export const discussionBody = t.Object({
   image_id: t.Optional(t.String()),
 });
 
+export const discussionArrayResponse = t.Object({ discussions: t.Array(discussionDTO) });
+
 export const updateDiscussionDTO = t.Object({
   content: t.Optional(t.String()),
   image_id: t.Optional(t.String()),
