@@ -31,7 +31,7 @@ const app = new Elysia()
         }
     })
     .use(controllers)
-    .get('/*', 'Hi there! The server is currently flying so high 🚀')
+    .get('/*', { message: 'Hi there! The server is currently flying so high 🚀' })
     .listen(8000);
 
 console.log(`🦊 Server is running at ${app.server?.hostname}:${app.server?.port}`);
