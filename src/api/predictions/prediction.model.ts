@@ -11,7 +11,7 @@ export const predictionDTO = t.Object({
 });
 
 export const predictionBody = t.Object({
-    image: t.Any(),
+    image: t.File({ type: 'image', maxSize: '1m', maxItems: 1 }),
 });
 
 export const predictionQuery = t.Object({
