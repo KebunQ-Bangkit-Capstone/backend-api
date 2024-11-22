@@ -14,9 +14,13 @@ export const predictionBody = t.Object({
     image: t.File({ type: 'image', maxSize: '1m', maxItems: 1 }),
 });
 
-export const predictionQuery = t.Object({
+export const predictionCreateQuery = t.Object({
     user_id: t.String(),
     plant_index: t.String()
+});
+
+export const predictionQuery = t.Object({
+    user_id: t.String(),
 });
 
 export const predictionResponse = t.Object({

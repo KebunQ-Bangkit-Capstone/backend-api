@@ -2,7 +2,7 @@ import Elysia from "elysia";
 import { PredictionService } from "./prediction.service";
 import { DiseaseService } from "../diseases/disease.service";
 import { generalParams } from "../../models/params.model";
-import { predictionArrayResponse, predictionBody, PredictionDTO, predictionQuery, PredictionResponse, predictionResponse } from "./prediction.model";
+import { predictionArrayResponse, predictionBody, predictionCreateQuery, PredictionDTO, predictionQuery, PredictionResponse, predictionResponse } from "./prediction.model";
 import { InferenceService } from "../../services/inference.service";
 import { BucketService } from "../../services/bucket.service";
 import { getFileExtension } from "../../utils/getFileExtension";
@@ -65,7 +65,7 @@ export const predictionController = new Elysia({
             created_at: createdAt
         };
     }, {
-        query: predictionQuery,
+        query: predictionCreateQuery,
         body: predictionBody,
         response: predictionResponse,
         detail: { summary: 'Predict Image' }
