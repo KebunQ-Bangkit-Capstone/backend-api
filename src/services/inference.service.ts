@@ -5,7 +5,7 @@ export class InferenceService {
     async predict(plantIndex: number, image: File) {
         const arrayBuffer = await image.arrayBuffer();
         const content = new Uint8Array(arrayBuffer);
-        
+
         const tensor = tf.node
             .decodeJpeg(content)
             .resizeNearestNeighbor([224, 224])
@@ -24,16 +24,15 @@ export class InferenceService {
 
         const predictionData = await prediction?.data() as Float32Array;
         const confidenceScore = Math.max(...predictionData) * 100;
-        const rankType = Number(prediction?.rankType);
-
-        console.log(prediction);
+        const diseaseIndex = predictionData.reduce((maxIndex, current, index, arr) =>
+            current > arr[maxIndex] ? index : maxIndex, 0);
 
         tensor.dispose();
         prediction?.dispose();
 
         return {
             confidenceScore: confidenceScore,
-            diseaseIndex: rankType
+            diseaseIndex: diseaseIndex
         }
     }
 }
