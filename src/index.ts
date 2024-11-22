@@ -31,6 +31,8 @@ const app = new Elysia()
         set.headers["content-type"] = "application/json";
         set.status = responseStatus;
 
+        console.log(error.stack);
+        
         return {
             message: responseMessage,
         }

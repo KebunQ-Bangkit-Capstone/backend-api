@@ -2,9 +2,9 @@ import tf from '@tensorflow/tfjs-node';
 import { grapeModel, tomatoModel } from '..';
 
 export class InferenceService {
-    async predict(plantIndex: number, image: File) {
+    async predict(plantIndex: number, image: any) {
         const tensor = tf.node
-            .decodeJpeg(image as unknown as Uint8Array)
+            .decodeJpeg(image)
             .resizeNearestNeighbor([224, 224])
             .expandDims()
             .toFloat();
