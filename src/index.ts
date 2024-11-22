@@ -4,6 +4,11 @@ import { swagger } from "@elysiajs/swagger";
 import { DatabaseError } from "./utils/customError";
 import { prisma } from "./utils/prisma";
 import { controllers } from "./api";
+import loadModel from "./utils/loadModel";
+
+// url needs to be stored in env later
+export const grapeModel = await loadModel('https://storage.googleapis.com/kebunq-ml-model/grape/model.json');
+export const tomatoModel = await loadModel('https://storage.googleapis.com/kebunq-ml-model/tomato/model.json');
 
 const app = new Elysia()
     .use(cors())

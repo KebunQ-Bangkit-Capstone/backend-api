@@ -29,8 +29,8 @@ export const diseaseController = new Elysia({
     })
 
     .get('/', async ({ diseaseService, query }) => {
-        const { plant_name } = query;
-        const diseases = await diseaseService.getManyByPlantName(plant_name);
+        const { plant_index } = query;
+        const diseases = await diseaseService.getManyByPlantName(plant_index);
         return { diseases: [...diseases] };
     }, {
         query: diseaseQuery,

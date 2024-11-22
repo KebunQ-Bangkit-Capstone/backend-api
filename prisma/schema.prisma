@@ -28,8 +28,8 @@ model Users {
 
 model Predictions {
   prediction_id String @id
-  plant_name String
-  disease_name String
+  plant_index Int
+  disease_index Int
   confidence_score Float
   image_id String
   created_at String

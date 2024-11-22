@@ -2,8 +2,8 @@ import { t } from "elysia";
 
 export const predictionDTO = t.Object({
     prediction_id: t.String(),
-    plant_name: t.String(),
-    disease_name: t.String(),
+    plant_index: t.Number(),
+    disease_index: t.Number(),
     confidence_score: t.Number(),
     image_id: t.String(),
     user_id: t.String(),
@@ -11,7 +11,7 @@ export const predictionDTO = t.Object({
 });
 
 export const predictionBody = t.Object({
-    plant_name: t.String(),
+    plant_index: t.Number(),
     image: t.File({ type: 'image', maxSize: '1m', maxItems: 1 }),
     user_id: t.String(),
 });
@@ -22,8 +22,8 @@ export const predictionQuery = t.Object({
 
 export const predictionResponse = t.Object({
     prediction_id: t.String(),
-    plant_name: t.String(),
-    disease_name: t.String(),
+    plant_index: t.Number(),
+    disease_index: t.Number(),
     confidence_score: t.Number(),
     image_id: t.String(),
     user_id: t.String(),

@@ -24,9 +24,9 @@ export const predictionController = new Elysia({
         diseaseService,
         bucketService,
         body }) => {
-        const { plant_name, image, user_id } = body;
+        const { plant_index, image, user_id } = body;
 
-        const { confidenceScore, diseaseName } = await inferenceService.predict(plant_name, image);
+        const { confidenceScore, diseaseIndex } = await inferenceService.predict(plant_index, image);
 
         const predictionId = uuidv4();
         const fileExtension = getFileExtension(image.name);
@@ -38,9 +38,9 @@ export const predictionController = new Elysia({
 
         const data: PredictionDTO = {
             prediction_id: predictionId,
-            plant_name: plant_name,
+            plant_index: plant_index,
             user_id: user_id,
-            disease_name: diseaseName,
+            disease_index: diseaseIndex,
             confidence_score: confidenceScore,
             image_id: fileId,
             created_at: createdAt,
@@ -49,12 +49,12 @@ export const predictionController = new Elysia({
         await predictionService.create(data);
         await bucketService.upload(image, fileId);
 
-        const { treatment, analysis, article } = await diseaseService.getOne(`${plant_name}_${diseaseName}`);
+        const { treatment, analysis, article } = await diseaseService.getOne(`${plant_index}_${diseaseIndex}`);
 
         return {
             prediction_id: predictionId,
-            plant_name: plant_name,
-            disease_name: diseaseName,
+            plant_index: plant_index,
+            disease_index: diseaseIndex,
             confidence_score: confidenceScore,
             image_id: fileId,
             user_id: user_id,
@@ -71,7 +71,7 @@ export const predictionController = new Elysia({
 
     .get('/:id', async ({ predictionService, diseaseService, params: { id } }) => {
         const prediction = await predictionService.getOne(id);
-        const { treatment, analysis, article } = await diseaseService.getOne(`${prediction.plant_name}_${prediction.disease_name}`);
+        const { treatment, analysis, article } = await diseaseService.getOne(`${prediction.plant_index}_${prediction.disease_index}`);
 
         return {
             ...prediction,
@@ -91,7 +91,7 @@ export const predictionController = new Elysia({
         const predictions: PredictionResponse[] = [];
 
         (await predictionService.getManyByUserId(user_id)).forEach((pred) => {
-            const disease = diseases.find((dis) => dis.plant_name === pred.plant_name && dis.disease_name === pred.disease_name);
+            const disease = diseases.find((dis) => dis.plant_index === pred.plant_index && dis.disease_index === pred.disease_index);
             if (!disease) return;
 
             const prediction = {

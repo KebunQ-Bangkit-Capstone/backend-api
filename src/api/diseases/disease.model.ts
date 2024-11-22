@@ -2,8 +2,8 @@ import { t } from "elysia";
 
 export const diseaseDTO = t.Object({
     disease_id: t.String(),
-    plant_name: t.String(),
-    disease_name: t.String(),
+    plant_index: t.Number(),
+    disease_index: t.Number(),
     description: t.String(),
     treatment: t.String(),
     analysis: t.String(),
@@ -11,8 +11,8 @@ export const diseaseDTO = t.Object({
 });
 
 export const updateDiseaseDTO = t.Object({
-    plant_name: t.Optional(t.String()),
-    disease_name: t.Optional(t.String()),
+    plant_index: t.Optional(t.Number()),
+    disease_index: t.Optional(t.Number()),
     description: t.Optional(t.String()),
     treatment: t.Optional(t.String()),
     analysis: t.Optional(t.String()),
@@ -20,7 +20,7 @@ export const updateDiseaseDTO = t.Object({
 });
 
 export const diseaseQuery = t.Object({
-    plant_name: t.String(),
+    plant_index: t.Number(),
 });
 
 export const diseaseArrayResponse = t.Object({ diseases: t.Array(diseaseDTO) });
