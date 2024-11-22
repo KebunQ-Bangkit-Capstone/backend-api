@@ -6,7 +6,6 @@ import { predictionArrayResponse, predictionBody, PredictionDTO, predictionParam
 import { InferenceService } from "../../services/inference.service";
 import { BucketService } from "../../services/bucket.service";
 import { getFileExtension } from "../../utils/getFileExtension";
-import { DiseaseDTO } from "../diseases/disease.model";
 import { v4 as uuidv4 } from 'uuid';
 
 export const predictionController = new Elysia({
@@ -26,8 +25,8 @@ export const predictionController = new Elysia({
         body,
         params: { plant_index, user_id } }) => {
         const { image } = body;
-
-        const { confidenceScore, diseaseIndex } = await inferenceService.predict(plant_index, image);
+        const plantIndex = Number(plant_index);
+        const { confidenceScore, diseaseIndex } = await inferenceService.predict(plantIndex, image);
 
         const predictionId = uuidv4();
         const fileExtension = getFileExtension(image.name);
@@ -39,7 +38,7 @@ export const predictionController = new Elysia({
 
         const data: PredictionDTO = {
             prediction_id: predictionId,
-            plant_index: plant_index,
+            plant_index: plantIndex,
             user_id: user_id,
             disease_index: diseaseIndex,
             confidence_score: confidenceScore,
@@ -54,7 +53,7 @@ export const predictionController = new Elysia({
 
         return {
             prediction_id: predictionId,
-            plant_index: plant_index,
+            plant_index: plantIndex,
             disease_index: diseaseIndex,
             confidence_score: confidenceScore,
             image_id: fileId,

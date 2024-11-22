@@ -20,7 +20,7 @@ export const predictionQuery = t.Object({
 
 export const predictionParams = t.Object({
     user_id: t.String(),
-    plant_index: t.Number()
+    plant_index: t.String()
 });
 
 export const predictionResponse = t.Object({
