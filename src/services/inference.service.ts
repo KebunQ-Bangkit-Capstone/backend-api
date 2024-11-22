@@ -17,19 +17,19 @@ export class InferenceService {
         if (plantIndex === 0) { // cucumber
 
         } else if (plantIndex === 1) { // grape
-            prediction = grapeModel.predict(tensor) as any;
+            prediction = grapeModel.predict(tensor) as tf.Tensor;
         } else if (plantIndex === 2) { // tomato
-            prediction = tomatoModel.predict(tensor) as any;
+            prediction = tomatoModel.predict(tensor) as tf.Tensor;
         }
 
-        const predictionData = await prediction.data();
+        const predictionData = await prediction?.data() as Float32Array;
         const confidenceScore = Math.max(...predictionData) * 100;
-        const rankType = Number(prediction.rankType);
+        const rankType = Number(prediction?.rankType);
 
-        console.log(predictionData);
+        console.log(prediction);
 
         tensor.dispose();
-        prediction.dispose();
+        prediction?.dispose();
 
         return {
             confidenceScore: confidenceScore,
