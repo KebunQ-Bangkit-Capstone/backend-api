@@ -27,7 +27,7 @@ export const predictionController = new Elysia({
         const { image } = body;
         const { plant_index, user_id } = query;
         const plantIndex = Number(plant_index);
-        const { confidenceScore, diseaseIndex } = await inferenceService.predict(plantIndex, image);
+        const { confidenceScore, diseaseIndex, newImage } = await inferenceService.predict(plantIndex, image);
 
         const predictionId = uuidv4();
         const fileExtension = getFileExtension(image.name);
@@ -48,7 +48,7 @@ export const predictionController = new Elysia({
         };
 
         await predictionService.create(data);
-        await bucketService.upload(image, fileId);
+        await bucketService.upload(newImage, fileId);
 
         const { treatment, analysis, article } = await diseaseService.getOne(`${plant_index}_${diseaseIndex}`);
 
