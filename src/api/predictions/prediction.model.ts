@@ -16,10 +16,6 @@ export const predictionBody = t.Object({
 
 export const predictionQuery = t.Object({
     user_id: t.String(),
-});
-
-export const predictionParams = t.Object({
-    user_id: t.String(),
     plant_index: t.String()
 });
 
