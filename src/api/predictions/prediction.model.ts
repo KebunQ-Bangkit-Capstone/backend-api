@@ -11,13 +11,16 @@ export const predictionDTO = t.Object({
 });
 
 export const predictionBody = t.Object({
-    plant_index: t.Number(),
     image: t.File({ type: 'image', maxSize: '1m', maxItems: 1 }),
-    user_id: t.String(),
 });
 
 export const predictionQuery = t.Object({
     user_id: t.String(),
+});
+
+export const predictionParams = t.Object({
+    user_id: t.String(),
+    plant_index: t.Number()
 });
 
 export const predictionResponse = t.Object({
