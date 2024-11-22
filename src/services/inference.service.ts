@@ -22,9 +22,11 @@ export class InferenceService {
             prediction = tomatoModel.predict(tensor) as any;
         }
 
-        const predictionData = await prediction?.data();
+        const predictionData = await prediction.data();
         const confidenceScore = Math.max(...predictionData) * 100;
-        const rankType = Number(prediction?.rankType);
+        const rankType = Number(prediction.rankType);
+
+        console.log(predictionData);
 
         tensor.dispose();
         prediction.dispose();
