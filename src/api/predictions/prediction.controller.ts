@@ -26,7 +26,9 @@ export const predictionController = new Elysia({
         query }) => {
         const { image } = body;
         const { plant_index, user_id } = query;
+        
         const plantIndex = Number(plant_index);
+
         const { confidenceScore, diseaseIndex } = await inferenceService.predict(plantIndex, image);
 
         const predictionId = uuidv4();

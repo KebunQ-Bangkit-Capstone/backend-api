@@ -50,7 +50,7 @@ export class DiseaseService {
         }
     }
 
-    async update(id: string, newData: UpdateDiseaseDTO) {
+    async update(id: string, newData: Omit<UpdateDiseaseDTO, 'image'>) {
         try {
             await this.collection.doc(id).update({ ...newData });
         } catch (err: any) {
