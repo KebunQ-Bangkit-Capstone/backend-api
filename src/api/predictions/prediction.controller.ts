@@ -95,12 +95,14 @@ export const predictionController = new Elysia({
     .get('/', async ({ predictionService, diseaseService, bucketService, query }) => {
         const { user_id } = query;
         const diseases = await diseaseService.getMany();
-        const predictions: PredictionResponse[] = [];
+        const predictionsResponse: PredictionResponse[] = [];
 
-        (await predictionService.getManyByUserId(user_id)).forEach(async (prediction) => {
-            const { image_id, ...pred } = prediction;
+        const predictions = await predictionService.getManyByUserId(user_id);
+
+        for (let i = 0; i < predictions.length; i++) {
+            const { image_id, ...pred } = predictions[i];
             const disease = diseases.find((dis) => dis.plant_index === pred.plant_index && dis.disease_index === pred.disease_index);
-            if (!disease) return;
+            if (!disease) continue;
 
             const url = await bucketService.getSignedUrl(image_id);
 
@@ -112,11 +114,11 @@ export const predictionController = new Elysia({
                 temporary_image_url: url
             };
 
-            predictions.push(newPrediction);
-        });
+            predictionsResponse.push(newPrediction);
+        }
 
         return {
-            predictions: predictions
+            predictions: predictionsResponse
         }
     }, {
         query: predictionQuery,

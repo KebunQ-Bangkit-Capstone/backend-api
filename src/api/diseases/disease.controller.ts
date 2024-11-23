@@ -53,10 +53,12 @@ export const diseaseController = new Elysia({
         const { plant_index } = query;
         const plantIndex = Number(plant_index);
 
-        const diseases: DiseaseResponse[] = [];
+        const diseasesResponse: DiseaseResponse[] = [];
 
-        (await diseaseService.getManyByPlantIndex(plantIndex)).forEach(async (disease) => {
-            const { image_id, ...rest } = disease;
+        const diseases = await diseaseService.getManyByPlantIndex(plantIndex);
+
+        for (let i = 0; i < diseases.length; i++) {
+            const { image_id, ...rest } = diseases[i];
             const url = await bucketService.getSignedUrl(image_id);
 
             const newDisease: DiseaseResponse = {
@@ -64,13 +66,13 @@ export const diseaseController = new Elysia({
                 temporary_image_url: url
             }
 
-            diseases.push(newDisease);
-        });
+            diseasesResponse.push(newDisease);
+        }
 
         console.log(diseases);
-        
+
         return {
-            diseases: diseases
+            diseases: diseasesResponse
         };
     }, {
         query: diseaseQuery,
@@ -79,10 +81,12 @@ export const diseaseController = new Elysia({
     })
 
     .get('/all', async ({ diseaseService, bucketService }) => {
-        const diseases: DiseaseResponse[] = [];
+        const diseasesResponse: DiseaseResponse[] = [];
 
-        (await diseaseService.getMany()).forEach(async (disease) => {
-            const { image_id, ...rest } = disease;
+        const diseases = await diseaseService.getMany();
+
+        for (let i = 0; i < diseases.length; i++) {
+            const { image_id, ...rest } = diseases[i];
             const url = await bucketService.getSignedUrl(image_id);
 
             const newDisease: DiseaseResponse = {
@@ -90,11 +94,11 @@ export const diseaseController = new Elysia({
                 temporary_image_url: url
             }
 
-            diseases.push(newDisease);
-        });
+            diseasesResponse.push(newDisease);
+        }
 
         return {
-            diseases: diseases
+            diseases: diseasesResponse
         };
     }, {
         response: diseaseArrayResponse,
