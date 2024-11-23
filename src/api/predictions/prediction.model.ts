@@ -28,7 +28,7 @@ export const predictionResponse = t.Object({
     plant_index: t.Number(),
     disease_index: t.Number(),
     confidence_score: t.Number(),
-    image_id: t.String(),
+    temporary_image_url: t.String(),
     user_id: t.String(),
     treatment: t.String(),
     analysis: t.String(),

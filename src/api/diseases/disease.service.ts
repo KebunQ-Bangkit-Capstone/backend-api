@@ -32,7 +32,7 @@ export class DiseaseService {
         }
     }
 
-    async getManyByPlantName(plantIndex: number) {
+    async getManyByPlantIndex(plantIndex: number) {
         try {
             const snapshots = await this.collection.where('plant_index', '==', plantIndex).get();
             return snapshots.docs.map((doc) => ({ ...doc.data() })) as DiseaseDTO[];

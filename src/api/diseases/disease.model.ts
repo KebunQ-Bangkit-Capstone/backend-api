@@ -21,7 +21,7 @@ export const updateDiseaseDTO = t.Object({
     image: t.Optional(t.File({ type: 'image', maxSize: '1m', maxItems: 1 })),
 });
 
-export const diseaseBodyAndReponse = t.Object({
+export const diseaseBody = t.Object({
     disease_id: t.String(),
     plant_index: t.Number(),
     disease_index: t.Number(),
@@ -32,12 +32,24 @@ export const diseaseBodyAndReponse = t.Object({
     image: t.File({ type: 'image', maxSize: '1m', maxItems: 1 }),
 });
 
-export const diseaseQuery = t.Object({
+export const diseaseResponse = t.Object({
+    disease_id: t.String(),
     plant_index: t.Number(),
+    disease_index: t.Number(),
+    description: t.String(),
+    treatment: t.String(),
+    analysis: t.String(),
+    article: t.String(),
+    temporary_image_url: t.String()
 });
 
-export const diseaseArrayResponse = t.Object({ diseases: t.Array(diseaseBodyAndReponse) });
+export const diseaseQuery = t.Object({
+    plant_index: t.String(),
+});
+
+export const diseaseArrayResponse = t.Object({ diseases: t.Array(diseaseResponse) });
 
 export type DiseaseDTO = typeof diseaseDTO.static;
 export type UpdateDiseaseDTO = typeof updateDiseaseDTO.static;
-export type DiseaseBodyAndReponse = typeof diseaseBodyAndReponse.static
+export type DiseaseBody = typeof diseaseBody.static
+export type DiseaseResponse = typeof diseaseResponse.static;

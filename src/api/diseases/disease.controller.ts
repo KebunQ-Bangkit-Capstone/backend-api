@@ -1,6 +1,6 @@
 import Elysia, { t } from "elysia";
 import { DiseaseService } from "./disease.service";
-import { DiseaseDTO, diseaseQuery, diseaseArrayResponse, updateDiseaseDTO, diseaseBodyAndReponse, DiseaseBodyAndReponse } from "./disease.model";
+import { DiseaseDTO, diseaseQuery, diseaseArrayResponse, updateDiseaseDTO, diseaseDTO, diseaseBody, diseaseResponse, DiseaseResponse } from "./disease.model";
 import { generalResponse } from "../../models/response.model";
 import { generalParams } from "../../models/params.model";
 import { BucketService } from "../../services/bucket.service";
@@ -14,7 +14,7 @@ export const diseaseController = new Elysia({
     .decorate('bucketService', new BucketService())
 
     .post('/', async ({ diseaseService, bucketService, body }) => {
-        const { disease_id, image } = body;
+        const { disease_id, image, ...rest } = body;
 
         const fileExtension = getFileExtension(image.name);
         const fileId = `image-disease-${disease_id}.${fileExtension}`;
@@ -22,43 +22,46 @@ export const diseaseController = new Elysia({
         await bucketService.upload(image, fileId);
 
         const data: DiseaseDTO = {
-            ...body,
-            image_id: fileId
+            disease_id: disease_id,
+            ...rest,
+            image_id: fileId,
         };
 
         await diseaseService.create(data);
         return { message: 'Disease created successfully.' }
     }, {
         response: generalResponse,
-        body: diseaseBodyAndReponse,
+        body: diseaseBody,
         detail: { summary: 'Create Disease' }
     })
 
     .get('/:id', async ({ diseaseService, bucketService, params: { id } }) => {
         const { image_id, ...rest } = await diseaseService.getOne(id);
-        const image = await bucketService.download(image_id);
+        const url = await bucketService.getSignedUrl(image_id);
 
         return {
             ...rest,
-            image: image
+            temporary_image_url: url
         };
     }, {
         params: generalParams,
-        response: diseaseBodyAndReponse,
+        response: diseaseResponse,
         detail: { summary: 'Get One Disease' }
     })
 
     .get('/', async ({ diseaseService, bucketService, query }) => {
         const { plant_index } = query;
-        const diseases: DiseaseBodyAndReponse[] = [];
+        const plantIndex = Number(plant_index);
 
-        (await diseaseService.getManyByPlantName(plant_index)).forEach(async (disease) => {
+        const diseases: DiseaseResponse[] = [];
+
+        (await diseaseService.getManyByPlantIndex(plantIndex)).forEach(async (disease) => {
             const { image_id, ...rest } = disease;
-            const image = await bucketService.download(image_id);
+            const url = await bucketService.getSignedUrl(image_id);
 
-            const newDisease = {
+            const newDisease: DiseaseResponse = {
                 ...rest,
-                image: image
+                temporary_image_url: url
             }
 
             diseases.push(newDisease);
@@ -70,19 +73,19 @@ export const diseaseController = new Elysia({
     }, {
         query: diseaseQuery,
         response: diseaseArrayResponse,
-        detail: { summary: 'Get Many Diseases by Plant Name' }
+        detail: { summary: 'Get Many Diseases by Plant Index' }
     })
 
     .get('/all', async ({ diseaseService, bucketService }) => {
-        const diseases: DiseaseBodyAndReponse[] = [];
+        const diseases: DiseaseResponse[] = [];
 
         (await diseaseService.getMany()).forEach(async (disease) => {
             const { image_id, ...rest } = disease;
-            const image = await bucketService.download(image_id);
+            const url = await bucketService.getSignedUrl(image_id);
 
-            const newDisease = {
+            const newDisease: DiseaseResponse = {
                 ...rest,
-                image: image
+                temporary_image_url: url
             }
 
             diseases.push(newDisease);

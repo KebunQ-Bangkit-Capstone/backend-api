@@ -11,7 +11,7 @@ export class BucketService {
             const arrayBuffer = await file.arrayBuffer();
             const buffer = Buffer.from(arrayBuffer);
 
-            storage.bucket(this.bucketName).file(fileId).save(buffer);
+            await storage.bucket(this.bucketName).file(fileId).save(buffer);
         } catch (err: any) {
             throw new DatabaseError(err.message);
         }
@@ -22,6 +22,19 @@ export class BucketService {
             const [data] = await storage.bucket(this.bucketName).file(fileId).download();
             const blob = new Blob([data]);
             return new File([blob], fileId);
+        } catch (err: any) {
+            throw new DatabaseError(err.message);
+        }
+    }
+
+    async getSignedUrl(fileId: string) {
+        try {
+            const [url] = await storage.bucket(this.bucketName).file(fileId).getSignedUrl({
+                action: 'read',
+                expires: Date.now() + 300000 // 5 minutes
+            });
+
+            return url;
         } catch (err: any) {
             throw new DatabaseError(err.message);
         }
