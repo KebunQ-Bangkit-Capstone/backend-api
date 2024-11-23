@@ -67,6 +67,8 @@ export const diseaseController = new Elysia({
             diseases.push(newDisease);
         });
 
+        console.log(diseases);
+        
         return {
             diseases: diseases
         };
