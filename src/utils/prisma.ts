@@ -18,5 +18,5 @@ await connector.startLocalProxy({
 // note that the host parameter needs to point to the parent folder of
 // the socket provided in the `path` Connector option, in this example
 // that is going to be the current working directory
-const datasourceUrl = `postgresql://postgres:masfarhandouble@localhost/kebunq-sql`;
+const datasourceUrl = `postgresql://postgres:masfarhandouble@34.57.197.206/kebunq-sql`;
 export const prisma = new PrismaClient({ datasourceUrl });
