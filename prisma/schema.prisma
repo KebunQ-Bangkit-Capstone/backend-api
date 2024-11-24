@@ -9,8 +9,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite" //coba pake sqlite dulu
-  url      = "file:./dev.db" //env("DATABASE_URL")
+  provider = "postgresql" //coba pake sqlite dulu
+  url      = "postgresql://postgres:masfarhandouble@34.57.197.206/kebunq-sql"
 }
 
 model Users {
