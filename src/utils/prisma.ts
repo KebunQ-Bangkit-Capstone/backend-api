@@ -6,17 +6,19 @@ import {
   IpAddressTypes,
 } from "@google-cloud/cloud-sql-connector";
 
-const path = resolve(".s.PGSQL.5432"); // postgres-required socket filename
+const path = resolve(".s.PGSQL.5432"); // socket filename
 const connector = new Connector();
-await connector.startLocalProxy({
-  instanceConnectionName: "bangkit-capstone-kebunq:us-central1:kebunq-sql",
-  ipType: IpAddressTypes.PUBLIC,
-  authType: AuthTypes.IAM,
-  listenOptions: { path },
-});
 
-// note that the host parameter needs to point to the parent folder of
-// the socket provided in the `path` Connector option, in this example
-// that is going to be the current working directory
-const datasourceUrl = `postgresql://postgres:masfarhandouble@34.57.197.206/kebunq-sql`;
+async function startProxy() {
+  await connector.startLocalProxy({
+    instanceConnectionName: "bangkit-capstone-kebunq:us-central1:kebunq-sql",
+    ipType: IpAddressTypes.PUBLIC,
+    authType: AuthTypes.IAM,
+    listenOptions: { path },
+  });
+}
+
+startProxy().catch(console.error);
+
+const datasourceUrl = process.env.DATABASE_URL; // Use localhost for local proxy
 export const prisma = new PrismaClient({ datasourceUrl });
