@@ -9,7 +9,7 @@ import {
 const path = resolve(".s.PGSQL.5432"); // postgres-required socket filename
 const connector = new Connector();
 await connector.startLocalProxy({
-  instanceConnectionName: "",
+  instanceConnectionName: "bangkit-capstone-kebunq:us-central1:kebunq-sql",
   ipType: IpAddressTypes.PUBLIC,
   authType: AuthTypes.IAM,
   listenOptions: { path },
