@@ -6,9 +6,9 @@ import { prisma } from "./utils/prisma";
 import { controllers } from "./api";
 import loadModel from "./utils/loadModel";
 
-// url needs to be stored in env later
-export const grapeModel = await loadModel('https://storage.googleapis.com/kebunq-ml-model/grape/model.json');
-export const tomatoModel = await loadModel('https://storage.googleapis.com/kebunq-ml-model/tomato/model.json');
+export const cucumberModel = await loadModel(String(process.env.CUCUMBER_MODEL_URL))
+export const grapeModel = await loadModel(String(process.env.GRAPE_MODEL_URL));
+export const tomatoModel = await loadModel(String(process.env.TOMATO_MODEL_URL));
 
 const app = new Elysia()
     .use(cors())

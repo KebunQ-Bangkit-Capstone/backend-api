@@ -1,5 +1,5 @@
 import tf from '@tensorflow/tfjs-node';
-import { grapeModel, tomatoModel } from '..';
+import { cucumberModel, grapeModel, tomatoModel } from '..';
 
 export class InferenceService {
     async predict(plantIndex: number, image: File) {
@@ -15,7 +15,7 @@ export class InferenceService {
         let prediction;
 
         if (plantIndex === 0) { // cucumber
-
+            prediction = cucumberModel.predict(tensor) as tf.Tensor;
         } else if (plantIndex === 1) { // grape
             prediction = grapeModel.predict(tensor) as tf.Tensor;
         } else if (plantIndex === 2) { // tomato
