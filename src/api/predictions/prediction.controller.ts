@@ -39,9 +39,18 @@ export const predictionController = new Elysia({
         date.setHours(date.getHours() + 7);
         const createdAt = date.toISOString().replace('Z', '+07:00');
 
+        const {
+            treatment,
+            analysis,
+            article,
+            plant_name,
+            disease_name } = await diseaseService.getOne(`${plant_index}_${diseaseIndex}`);
+
         const data: PredictionDTO = {
             prediction_id: predictionId,
             plant_index: plantIndex,
+            plant_name: plant_name,
+            disease_name: disease_name,
             user_id: user_id,
             disease_index: diseaseIndex,
             confidence_score: confidenceScore,
@@ -52,13 +61,14 @@ export const predictionController = new Elysia({
         await predictionService.create(data);
         await bucketService.upload(image, fileId);
 
-        const { treatment, analysis, article } = await diseaseService.getOne(`${plant_index}_${diseaseIndex}`);
         const url = await bucketService.getSignedUrl(fileId);
 
         return {
             prediction_id: predictionId,
             plant_index: plantIndex,
             disease_index: diseaseIndex,
+            plant_name: plant_name,
+            disease_name: disease_name,
             confidence_score: confidenceScore,
             user_id: user_id,
             treatment: treatment,

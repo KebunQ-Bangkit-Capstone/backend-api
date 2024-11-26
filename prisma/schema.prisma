@@ -30,6 +30,8 @@ model Predictions {
   prediction_id String @id
   plant_index Int
   disease_index Int
+  plant_name String
+  disease_name String
   confidence_score Float
   image_id String
   created_at String

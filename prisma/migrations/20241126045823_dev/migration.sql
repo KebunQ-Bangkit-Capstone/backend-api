@@ -14,6 +14,8 @@ CREATE TABLE "Predictions" (
     "prediction_id" TEXT NOT NULL,
     "plant_index" INTEGER NOT NULL,
     "disease_index" INTEGER NOT NULL,
+    "plant_name" TEXT NOT NULL,
+    "disease_name" TEXT NOT NULL,
     "confidence_score" DOUBLE PRECISION NOT NULL,
     "image_id" TEXT NOT NULL,
     "created_at" TEXT NOT NULL,
