@@ -23,7 +23,7 @@ export class InferenceService {
         }
 
         const predictionData = await prediction?.data() as Float32Array;
-        const confidenceScore = Math.max(...predictionData) * 100;
+        const confidenceScore = (Math.max(...predictionData) * 100).toFixed(1);
         const diseaseIndex = predictionData.reduce((maxIndex, current, index, arr) =>
             current > arr[maxIndex] ? index : maxIndex, 0);
 
