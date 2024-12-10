@@ -1,6 +1,4 @@
-# API Documentation
-
-## Endpoints
+# API Endpoints
 
 #### Users
 
@@ -140,7 +138,7 @@
 ##### Request Body
 ```json
 {
-   "image": File
+   "image": "File"
 }
 ```
 
@@ -148,11 +146,11 @@
 ```json
 {
     "prediction_id": "string",
-    "plant_index": number,
-    "disease_index": number,
+    "plant_index": 1,
+    "disease_index": 1,
     "plant_name": "string",
     "disease_name": "string",
-    "confidence_score": number,
+    "confidence_score": 1,
     "temporary_image_url": "string",
     "user_id": "string",
     "treatment": "string",
@@ -180,11 +178,11 @@
     "predictions": [
         {
             "prediction_id": "string",
-            "plant_index": number,
-            "disease_index": number,
+            "plant_index": 1,
+            "disease_index": 1,
             "plant_name": "string",
             "disease_name": "string",
-            "confidence_score": number,
+            "confidence_score": 1,
             "temporary_image_url": "string",
             "user_id": "string",
             "treatment": "string",
@@ -212,11 +210,11 @@
 ```json
 {
     "prediction_id": "string",
-    "plant_index": number,
-    "disease_index": number,
+    "plant_index": 1,
+    "disease_index": 1,
     "plant_name": "string",
     "disease_name": "string",
-    "confidence_score": number,
+    "confidence_score": 1,
     "temporary_image_url": "string",
     "user_id": "string",
     "treatment": "string",
@@ -273,8 +271,8 @@
     "diseases": [
         {
             "disease_id": "string",
-            "plant_index": number,
-            "disease_index": number,
+            "plant_index": 1,
+            "disease_index": 1,
             "plant_name": "string",
             "disease_name": "string",
             "description": "string",
@@ -305,8 +303,8 @@
     "diseases": [
         {
             "disease_id": "string",
-            "plant_index": number,
-            "disease_index": number,
+            "plant_index": 1,
+            "disease_index": 1,
             "plant_name": "string",
             "disease_name": "string",
             "description": "string",
@@ -335,8 +333,8 @@
 ```json 
 {
     "disease_id": "string",
-    "plant_index": number,
-    "disease_index": number,
+    "plant_index": 1,
+    "disease_index": 1,
     "plant_name": "string",
     "disease_name": "string",
     "description": "string",
@@ -359,8 +357,8 @@
 ##### Request Body
 ```json
 {
-    "plant_index": number,
-    "disease_index": number,
+    "plant_index": 1,
+    "disease_index": 1,
     "plant_name": "string",
     "disease_name": "string",
     "description": "string",
