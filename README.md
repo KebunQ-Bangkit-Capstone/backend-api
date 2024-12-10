@@ -257,7 +257,7 @@
 #### Diseases
 
 <details>
- <summary><code>POST</code> <code><b>/diseases/all</b></code> <code>(get all diseases)</code></summary>
+ <summary><code>GET</code> <code><b>/diseases/all</b></code> <code>(get all diseases)</code></summary>
 
 ##### Parameters
 > None
