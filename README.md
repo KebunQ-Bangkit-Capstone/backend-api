@@ -395,3 +395,11 @@
 }
 ```
 </details>
+<br><br>
+
+
+# Entity Relational Diagram
+
+<p align="center">
+  <img src="images/erd.png" alt="erd" />
+</p>
