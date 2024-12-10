@@ -257,6 +257,36 @@
 #### Diseases
 
 <details>
+ <summary><code>POST</code> <code><b>/diseases</b></code> <code>(create disease)</code></summary>
+
+##### Parameters
+> None
+
+##### Request Body
+```json 
+{
+    "disease_id": "string",
+    "plant_index": 1,
+    "disease_index": 1,
+    "plant_name": "string",
+    "disease_name": "string",
+    "description": "string",
+    "treatment": "string",
+    "analysis": "string",
+    "article": "string",
+    "image_id": "string"
+}
+```
+
+##### Response Body
+```json
+{
+    "message": "string"
+}
+```
+</details>
+
+<details>
  <summary><code>GET</code> <code><b>/diseases/all</b></code> <code>(get all diseases)</code></summary>
 
 ##### Parameters
