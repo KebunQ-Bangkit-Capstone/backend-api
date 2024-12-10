@@ -425,7 +425,6 @@
 }
 ```
 </details>
-<br><br>
 
 
 # Entity Relational Diagram
