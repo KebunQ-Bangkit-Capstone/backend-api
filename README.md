@@ -427,6 +427,13 @@
 </details>
 
 
+# Cloud Architecture Diagram
+
+<p align="center">
+  <img src="images/cloud-architecture.png" alt="cloud architecture" />
+</p>
+
+
 # Entity Relational Diagram
 
 <p align="center">
