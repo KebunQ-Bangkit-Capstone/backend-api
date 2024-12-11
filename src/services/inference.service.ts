@@ -46,7 +46,7 @@ export class InferenceService {
         const json = await response.json() as any;
 
         return {
-            confidenceScore: Math.trunc(Number(json.confidence_score)),
+            confidenceScore: Math.trunc(Number(json.confidence_score) * 100),
             diseaseIndex: Number(json.class)
         }
     }
