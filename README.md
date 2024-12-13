@@ -1,3 +1,7 @@
+#Cloud Architechture
+![yang baru](https://github.com/user-attachments/assets/bd198d90-14e8-4c70-9426-ac32d25fe692)
+
+
 # API Endpoints
 
 #### Users
